@@ -1,0 +1,32 @@
+const bookModel=require('../models/book.model');
+class BooksCtrl{
+
+    get= async (req,res)=>{
+        try{
+            const data= await bookModel.find({});
+            res.status(200);
+            res.json(data);
+
+        }catch(err){
+            res.status(500);
+            res.send('Internal Server Error')
+        }
+    }
+
+    post= async (req,res)=>{
+        try{
+            const data= res.body;
+            data.postedDate= Date.now();
+            const book= bookModel(data);
+            book.save();
+            res.status(201);
+            res.send('Created');
+        }catch(err){
+            res.status(500);
+            res.send('Internal Server Error');
+        }
+    }
+
+
+};
+module.exports=new BooksCtrl;
